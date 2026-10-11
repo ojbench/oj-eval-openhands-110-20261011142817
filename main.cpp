@@ -22,11 +22,16 @@ private:
         if (year < 1900 || year > 2030 || month < 1 || month > 12 || day < 1)
             return false;
         
-        int maxDays = month_days[month];
-        if (month == 2 && isLeapYear(year))
-            maxDays = 29;
-            
-        return day <= maxDays;
+        if (month == 2) {
+            if (isLeapYear(year))
+                return day <= 29;
+            else
+                return day <= 28;
+        }
+        
+        // For other months, use the month_days array
+        int days[] = {0, 31, 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        return day <= days[month];
     }
     
     // Get the number of days in a month
