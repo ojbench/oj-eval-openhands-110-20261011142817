@@ -48,13 +48,16 @@ private:
             days += daysInMonth(_year, m);
         }
         // Add days
-        days += _day;
+        days += _day - 1;  // Subtract 1 because 1900-1-1 should be day 0
         return days;
     }
     
     // Convert total days to date
     void fromDays(long long totalDays) {
         _year = 1900;
+        // Add 1 to totalDays because we subtracted 1 in toDays
+        totalDays += 1;
+        
         while (totalDays > (isLeapYear(_year) ? 366 : 365)) {
             totalDays -= (isLeapYear(_year) ? 366 : 365);
             _year++;
@@ -145,7 +148,7 @@ public:
     // Subtract dates: d1 - d2 (absolute difference in days)
     int operator-(const Date& other) const {
         long long days1 = toDays();
-        long long days2 = toDays();
+        long long days2 = other.toDays();
         long long diff = days1 - days2;
         return diff > 0 ? diff : -diff;
     }
